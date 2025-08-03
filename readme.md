@@ -28,7 +28,6 @@
 
 ```bash
 git clone https://github.com/alexanderzhirnov/Note-bot
-cd 
 ```
 
 
@@ -69,7 +68,7 @@ ngrok http 8000
 - Telegram-бот через BotFather: `/setdomain`
 - `data-auth-url` в `templates/registration/telegram_login.html`
 
-## Тестирование API
+### Тестирование API
 
 Используйте Postman или curl:
 
@@ -81,13 +80,13 @@ GET https://<ngrok-domain>.ngrok-free.app/api/notes/
 
 
 
-## Дамп базы данных (опционально)
+### Дамп базы данных (опционально)
 
 ```bash
 docker-compose exec web python manage.py dumpdata > dump.json
 ```
 
-## Сдача
+### Сдача
 
 - Репозиторий: GitHub с полным кодом
 - README с инструкциями
