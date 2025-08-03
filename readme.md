@@ -27,8 +27,8 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://
-cd t
+git clone https://github.com/alexanderzhirnov/Note-bot
+cd 
 ```
 
 
