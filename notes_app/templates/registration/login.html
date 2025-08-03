@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход в систему{% endblock %}
+
+{% block content %}
+    <div class="note-card">
+        <h2>Вход в систему</h2>
+        
+        {% if not is_telegram_user %}
+            <div style="margin-bottom: 2rem;">
+                <a href="{{ telegram_login_url }}" class="btn btn-telegram">
+                    Войти через Telegram
+                </a>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                    Рекомендуемый способ входа для пользователей бота
+                </p>
+            </div>
+            
+            <div style="border-top: 1px solid #ddd; padding-top: 1rem;">
+                <h3>Стандартный вход</h3>
+        {% endif %}
+        
+        {% if form.errors %}
+            <p style="color: red;">Неверное имя пользователя или пароль.</p>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+            </div>
+            <button type="submit" class="btn">Войти</button>
+        </form>
+        
+        {% if not is_telegram_user %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

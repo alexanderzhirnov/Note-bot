@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Редактирование{% else %}Новая заметка{% endif %}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">{% if form.instance.pk %}Редактирование заметки{% else %}Новая заметка{% endif %}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">Заголовок</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.title.errors.as_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.content.id_for_label }}" class="form-label">Содержание</label>
+                        {{ form.content }}
+                        {% if form.content.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.content.errors.as_text }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="{{ form.category.id_for_label }}" class="form-label">Категория</label>
+                        {{ form.category }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.tags.id_for_label }}" class="form-label">Теги</label>
+                        {{ form.tags }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.deadline.id_for_label }}" class="form-label">Срок выполнения</label>
+                        {{ form.deadline }}
+                        <small class="text-muted">Формат: ГГГГ-ММ-ДД ЧЧ:ММ</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <a href="{% if form.instance.pk %}{% url 'note_detail' form.instance.pk %}{% else %}{% url 'note_list' %}{% endif %}" 
+                   class="btn btn-outline-secondary">
+                    Отмена
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Инициализация выбора тегов
+    document.addEventListener('DOMContentLoaded', function() {
+        const tagSelect = document.getElementById('{{ form.tags.id_for_label }}');
+        if (tagSelect) {
+            tagSelect.classList.add('form-select');
+        }
+        
+        const categorySelect = document.getElementById('{{ form.category.id_for_label }}');
+        if (categorySelect) {
+            categorySelect.classList.add('form-select');
+        }
+    });
+</script>
+{% endblock %}

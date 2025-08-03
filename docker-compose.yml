@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: notes_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pasword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    env_file:
+    - .env
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://user:pasword@db:5432/notes_db
+      TELEGRAM_BOT_TOKEN: "8307694914:AAHhMIZOvGx1KppEITNtAIqawUY-8o9ga0A"
+      TELEGRAM_BOT_USERNAME: "nnotesbot"
+      # Другие переменные Django
+      SECRET_KEY: "django-insecure-#_oog_-2hccr_^hb*zs$w1#+qxx7-_u^64yncv10wt99a4*vko"
+      DEBUG: "True"
+
+volumes:
+  postgres_data:

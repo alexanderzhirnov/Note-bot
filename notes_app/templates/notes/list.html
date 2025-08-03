@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои заметки{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Мои заметки</h1>
+    <div>
+        <a href="{% url 'export_notes' %}" class="btn btn-outline-secondary me-2">
+            Экспорт в TXT
+        </a>
+        <a href="{% url 'note_create' %}" class="btn btn-primary">
+            + Новая заметка
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card mb-4">
+            <div class="card-header">Фильтры</div>
+            <div class="card-body">
+                <h5 class="card-title">Категории</h5>
+                <div class="list-group">
+                    <a href="?category=" class="list-group-item list-group-item-action {% if not request.GET.category %}active{% endif %}">
+                        Все категории
+                    </a>
+                    {% for category in categories %}
+                    <a href="?category={{ category.id }}" class="list-group-item list-group-item-action {% if request.GET.category == category.id|stringformat:'s' %}active{% endif %}">
+                        {{ category.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+
+                <h5 class="card-title mt-3">Теги</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for tag in tags %}
+                    <a href="?tag={{ tag.id }}" class="badge bg-{% if request.GET.tag == tag.id|stringformat:'s' %}primary{% else %}secondary{% endif %} text-decoration-none">
+                        {{ tag.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        {% if notes %}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for note in notes %}
+            <div class="col">
+                <div class="card h-100 note-card {% if note.is_overdue %}overdue{% endif %}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ note.title }}</h5>
+                        <p class="card-text text-muted small">
+                            Создано: {{ note.created_at|date:"d.m.Y H:i" }}<br>
+                            {% if note.category %}
+                            Категория: {{ note.category.name }}<br>
+                            {% endif %}
+                            {% if note.tags.exists %}
+                            Теги: {% for tag in note.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                            {% endif %}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'note_detail' note.pk %}" class="btn btn-sm btn-outline-primary">
+                                Подробнее
+                            </a>
+                            {% if note.is_overdue %}
+                            <span class="badge bg-danger">Просрочено</span>
+                            {% elif note.deadline %}
+                            <span class="badge bg-warning text-dark">
+                                До: {{ note.deadline|date:"d.m.Y" }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            У вас пока нет заметок. <a href="{% url 'note_create' %}" class="alert-link">Создать первую заметку</a>?
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

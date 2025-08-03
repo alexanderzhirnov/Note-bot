@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход через Telegram{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+      <h2>Вход через Telegram</h2>
+
+      <script async
+              src="https://telegram.org/js/telegram-widget.js?22"
+              data-telegram-login="nnotesbot"
+              data-size="large"
+              data-userpic="true"
+              data-request-access="write"
+              data-onauth="onTelegramAuth(user)">
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+function onTelegramAuth(user) {
+  console.log("Telegram auth data:", user);
+
+  fetch("{% url 'telegram_widget_auth' %}", {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify(user)
+  })
+  .then(response => {
+    console.log("HTTP status:", response.status);
+    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+    return response.json();
+  })
+  .then(data => {
+    console.log("Server response:", data);
+    if (data.status === 'success') {
+      window.location.href = data.redirect_url + '?t=' + Date.now();
+    } else {
+      alert('Ошибка: ' + (data.message || 'Неизвестная ошибка'));
+    }
+  })
+  .catch(error => {
+    console.error("Auth failed:", error);
+    alert('Ошибка авторизации: ' + error.message);
+  });
+}
+</script>
+{% endblock %}
