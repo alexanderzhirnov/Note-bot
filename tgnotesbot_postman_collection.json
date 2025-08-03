@@ -1,0 +1,73 @@
+{
+  "info": {
+    "name": "TGNotesBot API",
+    "_postman_id": "12345678-aaaa-bbbb-cccc-123456789abc",
+    "description": "Postman collection for TGNotesBot API testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Notes",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "sessionid=your_session_id_here",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://<your-ngrok-domain>.ngrok-free.app/api/notes/",
+          "protocol": "https",
+          "host": [
+            "<your-ngrok-domain>",
+            "ngrok-free",
+            "app"
+          ],
+          "path": [
+            "api",
+            "notes",
+            ""
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Note",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Cookie",
+            "value": "sessionid=your_session_id_here",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Test Note\",\n    \"content\": \"Created via Postman\"\n}"
+        },
+        "url": {
+          "raw": "https://<your-ngrok-domain>.ngrok-free.app/api/notes/",
+          "protocol": "https",
+          "host": [
+            "<your-ngrok-domain>",
+            "ngrok-free",
+            "app"
+          ],
+          "path": [
+            "api",
+            "notes",
+            ""
+          ]
+        }
+      }
+    }
+  ]
+}
