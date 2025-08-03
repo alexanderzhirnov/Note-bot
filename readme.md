@@ -67,6 +67,8 @@ ngrok http 8000
 
 - Telegram-бот через BotFather: `/setdomain`
 - `data-auth-url` в `templates/registration/telegram_login.html`
+- Для корректного отображения заметок следует сначала авторизироваться на сайте, а после уже создавать их через бота или так же на сайте.
+
 
 ### Тестирование API
 
